@@ -10,41 +10,86 @@ class HomePage extends StatefulWidget {
 final textoController = TextEditingController();
 
 class _HomePageState extends State<HomePage> {
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          title: const Text("Forms"),
-        ),
-        body: Container(
-          color: Colors.grey,
+      appBar: AppBar(
+        title: const Text("Forms"),
+      ),
+      body: Form(
+          key: formKey,
           child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
-                children: const [
-                  CusttomTexField(label: "name"),
-                  CusttomTexField(label: "name2"),
-                  CusttomTexField(label: "name3"),
+                children: [
+                  const CusttomTexField(
+                      label: "Name",
+                      icon: Icons.person,
+                      hint: "Coloque seu nome"),
+                  const SizedBox(height: 15),
+                  const CusttomTexField(
+                      label: "E-mail",
+                      icon: Icons.mail,
+                      hint: "Coloque seu e-mail"),
+                  const SizedBox(height: 15),
+                  const CusttomTexField(
+                      label: "Password",
+                      icon: Icons.key,
+                      hint: "Coloque sua senha"),
+                  const SizedBox(height: 15),
+                  const CusttomTexField(
+                      label: "Confirm Password",
+                      icon: Icons.key,
+                      hint: "Coloque sua senha"),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          formKey.currentState?.validate();
+                        },
+                        icon: const Icon(Icons.save),
+                        label: const Text("Salvar")),
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red),
+                        onPressed: () {},
+                        icon: const Icon(Icons.save),
+                        label: const Text("Reset")),
+                  ),
                 ],
-              )),
-        ));
+              ))),
+    );
   }
 }
 
 class CusttomTexField extends StatelessWidget {
   final String label;
-  const CusttomTexField({super.key, required this.label});
+  final String? hint;
+  final IconData? icon;
+  const CusttomTexField({super.key, required this.label, this.icon, this.hint});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: (text) {
+        if (text == null || text.isEmpty) {
+          return 'Esse campo não pode ser vazio';
+        }
+      },
       controller: textoController,
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: label,
-          prefixIcon: const Icon(Icons.person),
-          hintText: "Coloque o seu nome"),
+          prefixIcon: Icon(icon),
+          hintText: hint),
     );
   }
 }
