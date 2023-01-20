@@ -60,7 +60,9 @@ class _HomePageState extends State<HomePage> {
                     child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red),
-                        onPressed: () {},
+                        onPressed: () {
+                          formKey.currentState?.reset();
+                        },
                         icon: const Icon(Icons.save),
                         label: const Text("Reset")),
                   ),
